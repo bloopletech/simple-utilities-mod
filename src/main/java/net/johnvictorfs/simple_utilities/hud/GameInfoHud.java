@@ -16,6 +16,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,16 @@ public class GameInfoHud implements Drawable {
     private final MinecraftClient client;
     private final TextRenderer fontRenderer;
     private ClientPlayerEntity player;
+    private MatrixStack matrices;
 
     public GameInfoHud(MinecraftClient client) {
         this.client = client;
         this.fontRenderer = client.textRenderer;
     }
 
-    public void draw() {
+    public void draw(MatrixStack matrices) {
         this.player = this.client.player;
+        this.matrices = matrices;
 
         this.drawInfos();
 
@@ -51,20 +54,20 @@ public class GameInfoHud implements Drawable {
         int left = 4;
 
         for (String line : gameInfo) {
-            this.fontRenderer.draw(line, left, top + 4, Colors.lightGray);
+            this.fontRenderer.draw(matrices, line, left, top + 4, Colors.lightGray);
             top += lineHeight;
         }
 
         if (this.player.isSprinting()) {
             final String sprintingText = "Sprinting";
 
-            int maxLineHeight = Math.max(10, this.fontRenderer.getStringWidth(sprintingText));
+            int maxLineHeight = Math.max(10, this.fontRenderer.getWidth(sprintingText));
             maxLineHeight = (int) (Math.ceil(maxLineHeight / 5.0D + 0.5D) * 5);
             int scaleHeight = this.client.getWindow().getScaledHeight();
             int sprintingTop = scaleHeight - maxLineHeight;
 
             // Sprinting Info
-            this.fontRenderer.draw(sprintingText, 2, sprintingTop + 20, Colors.lightGray);
+            this.fontRenderer.draw(matrices, sprintingText, 2, sprintingTop + 20, Colors.lightGray);
         }
     }
 
@@ -116,7 +119,7 @@ public class GameInfoHud implements Drawable {
 
                 int color = effect.getKey().getColor();
 
-                this.fontRenderer.draw(effectName + " " + duration, 40, 200, color);
+                this.fontRenderer.draw(matrices, effectName + " " + duration, 40, 200, color);
             }
         }
     }
@@ -124,19 +127,19 @@ public class GameInfoHud implements Drawable {
     private void drawEquipementInfo() {
         List<ItemStack> equippedItems = new ArrayList<>();
         PlayerInventory inventory = this.player.inventory;
-        int maxLineHeight = Math.max(10, this.fontRenderer.getStringWidth(""));
+        int maxLineHeight = Math.max(10, this.fontRenderer.getWidth(""));
 
         ItemStack mainHandItem = inventory.getMainHandStack();
-        maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getStringWidth(I18n.translate(mainHandItem.getTranslationKey())));
+        maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getWidth(I18n.translate(mainHandItem.getTranslationKey())));
         equippedItems.add(mainHandItem);
 
         for (ItemStack secondHandItem : inventory.offHand) {
-            maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getStringWidth(I18n.translate(secondHandItem.getTranslationKey())));
+            maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getWidth(I18n.translate(secondHandItem.getTranslationKey())));
             equippedItems.add(secondHandItem);
         }
 
         for (ItemStack armourItem : this.player.inventory.armor) {
-            maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getStringWidth(I18n.translate(armourItem.getTranslationKey())));
+            maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getWidth(I18n.translate(armourItem.getTranslationKey())));
             equippedItems.add(armourItem);
         }
 
@@ -176,13 +179,13 @@ public class GameInfoHud implements Drawable {
                     color = Colors.lightRed;
                 }
 
-                this.fontRenderer.draw(itemDurability, 22, itemTop - 64, color);
+                this.fontRenderer.draw(matrices, itemDurability, 22, itemTop - 64, color);
             } else {
                 int count = equippedItem.getCount();
 
                 if (count > 1) {
                     String itemCount = String.valueOf(count);
-                    this.fontRenderer.draw(itemCount, 22, itemTop - 64, Colors.lightGray);
+                    this.fontRenderer.draw(matrices, itemCount, 22, itemTop - 64, Colors.lightGray);
                 }
             }
 
@@ -229,9 +232,9 @@ public class GameInfoHud implements Drawable {
         // gameInfo.add(client.fpsDebugString.substring(0, client.fpsDebugString.indexOf("s") + 1));
         gameInfo.add(String.format("%d fps", ((GameClientMixin) client.getInstance()).getCurrentFps()));
 
-        // Get translated biome info
+        // Get biome info
         if (client.world != null) {
-            gameInfo.add(I18n.translate(client.world.getBiome(this.player.getBlockPos()).getTranslationKey()) + " Biome");
+            gameInfo.add(capitalize(client.world.getBiome(this.player.getBlockPos()).getCategory().getName()) + " Biome");
 
             // Add current parsed time
             gameInfo.add(parseTime(client.world.getTimeOfDay()));
@@ -241,6 +244,6 @@ public class GameInfoHud implements Drawable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float delta) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
     }
 }
