@@ -8,7 +8,6 @@ import net.johnvictorfs.simple_utilities.mixin.GameClientMixin;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.effect.StatusEffect;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class GameInfoHud implements Drawable {
+public class GameInfoHud {
     private final MinecraftClient client;
     private final TextRenderer fontRenderer;
     private ClientPlayerEntity player;
@@ -241,9 +240,5 @@ public class GameInfoHud implements Drawable {
         }
 
         return gameInfo;
-    }
-
-    @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
     }
 }
