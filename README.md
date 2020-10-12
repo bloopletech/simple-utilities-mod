@@ -1,6 +1,6 @@
 # Simple Utilities Mod (Minecraft 1.16.x)
 
-Available to download from [Curseforge](https://www.curseforge.com/minecraft/mc-mods/simple-utilities).
+Forked from https://github.com/johnvictorfs/simple-utilities-mod.
 
 Built using [Fabric Example Mod Template](https://github.com/FabricMC/fabric-example-mod) and made with the [Fabric](https://fabricmc.net) modding toolchain for Minecraft.
 
@@ -28,7 +28,7 @@ A Minecraft Mod that enhances the Game's HUD with some simple utilities like the
 
 - Install [Fabric Loader](https://fabricmc.net/use/) on your Minecraft client
     - Recommended to install with the [MultiMC](https://multimc.org/) Minecraft client, which allows you to install Fabric in one click in the Minecraft instance settings
-- Download latest Mod `.jar` from [Github](https://github.com/johnvictorfs/simple-utilities-mod/releases/latest) or from [Curseforge](https://www.curseforge.com/minecraft/mc-mods/simple-utilities)
+- Download latest Mod `.jar` from [Github](https://github.com/bloopletech/simple-utilities-mod/releases/latest)
 - Put the downloaded Mod `.jar` in the `.minecraft/mods` folder
     - Or if you're using MultiMC, open the Minecraft instance settings you're using, and look for the option to add a Mod, then select the `.jar` file you downloaded
 - Done!
@@ -37,7 +37,7 @@ A Minecraft Mod that enhances the Game's HUD with some simple utilities like the
 
 ## Building from source
 
-- Clone the project with `git clone https://github.com/johnvictorfs/simple-utilities-mod.git`
+- Clone the project with `git clone https://github.com/bloopletech/simple-utilities-mod.git`
 - Cd into the project's directory `cd simple-utilities-mod`
 - Run `./gradlew build` to build the `.jar`
 - Built Mod `.jar` files will be located at `build/libs`
@@ -57,11 +57,11 @@ A Minecraft Mod that enhances the Game's HUD with some simple utilities like the
 ## FAQ
 
 - **Does this Mod work on versions below 1.16?**
-    - For 1.15, download this version: https://github.com/johnvictorfs/simple-utilities-mod/releases/tag/1.0.3
+    - For 1.15, download this version: https://github.com/bloopletech/simple-utilities-mod/releases/tag/1.0.3
     - For 1.14, no, it *might* work on 1.14 with some changes, but not anything below 1.14, since this Mod is made with Fabric, which only supports Minecraft 1.14 and above.
 
 - **Will this Mod get me banned from *X multiplayer server*?**
     - Maybe, maybe not, the Mod is entirely Client-sided and does not require it to be installed on the Server, and mostly shows things already available to you at all times like coordinates and Cardinal directions, like an extended but simplified F3 Menu, but it has some exceptions, like very specific Game time, so some servers may not allow it, do look into the Server's rules carefully before using it, do **not** create issues here asking about that, since I won't know.
 
 - **Will you add '*X feature not present in the [Planned Features](#planned-features) section*'**?
-    - Maybe, and only if it fits with the other features of the mod, create [an issue](https://github.com/johnvictorfs/simple-utilities-mod/issues/new) about it, I only on this project on my spare time, but I'd be happy to add wanted features in my spare time.
+    - Maybe, and only if it fits with the other features of the mod, create [an issue](https://github.com/bloopletech/simple-utilities-mod/issues/new) about it, I only on this project on my spare time, but I'd be happy to add wanted features in my spare time.

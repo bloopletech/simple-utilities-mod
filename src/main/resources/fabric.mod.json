@@ -6,11 +6,12 @@
   "name": "Simple Utilities",
   "description": "Adds simple utilities like extra simplified info on HUD and Toggle Sprint",
   "authors": [
-    "johnvictorfs"
+    "johnvictorfs",
+    "bloopletech"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/johnvictorfs/simple-utilities-mod"
+    "sources": "https://github.com/bloopletech/simple-utilities-mod"
   },
 
   "license": "CC0-1.0",
