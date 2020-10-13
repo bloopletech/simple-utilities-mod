@@ -24,13 +24,13 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class GameInfoHud {
     private final MinecraftClient client;
-    private final TextRenderer fontRenderer;
+    private final TextRenderer textRenderer;
     private ClientPlayerEntity player;
     private MatrixStack matrices;
 
     public GameInfoHud(MinecraftClient client) {
         this.client = client;
-        fontRenderer = client.textRenderer;
+        textRenderer = client.textRenderer;
     }
 
     public void draw(MatrixStack matrices) {
@@ -50,25 +50,25 @@ public class GameInfoHud {
         List<String> gameInfo = getGameInfo();
         drawEquipementInfo();
 
-        int lineHeight = fontRenderer.fontHeight + 2;
+        int lineHeight = textRenderer.fontHeight + 2;
         int top = 0;
         int left = 4;
 
         for (String line : gameInfo) {
-            fontRenderer.draw(matrices, line, left, top + 4, Colors.lightGray);
+            textRenderer.draw(matrices, line, left, top + 4, Colors.lightGray);
             top += lineHeight;
         }
 
         if (player.isSprinting()) {
             final String sprintingText = "Sprinting";
 
-            int maxLineHeight = Math.max(10, fontRenderer.getWidth(sprintingText));
+            int maxLineHeight = Math.max(10, textRenderer.getWidth(sprintingText));
             maxLineHeight = (int) (Math.ceil(maxLineHeight / 5.0D + 0.5D) * 5);
             int scaleHeight = client.getWindow().getScaledHeight();
             int sprintingTop = scaleHeight - maxLineHeight;
 
             // Sprinting Info
-            fontRenderer.draw(matrices, sprintingText, 2, sprintingTop + 20, Colors.lightGray);
+            textRenderer.draw(matrices, sprintingText, 2, sprintingTop + 20, Colors.lightGray);
         }
     }
 
@@ -120,7 +120,7 @@ public class GameInfoHud {
 
                 int color = effect.getKey().getColor();
 
-                fontRenderer.draw(matrices, effectName + " " + duration, 40, 200, color);
+                textRenderer.draw(matrices, effectName + " " + duration, 40, 200, color);
             }
         }
     }
@@ -128,26 +128,26 @@ public class GameInfoHud {
     private void drawEquipementInfo() {
         List<ItemStack> equippedItems = new ArrayList<>();
         PlayerInventory inventory = player.inventory;
-        int maxLineHeight = Math.max(10, fontRenderer.getWidth(""));
+        int maxLineHeight = Math.max(10, textRenderer.getWidth(""));
 
         ItemStack mainHandItem = inventory.getMainHandStack();
-        maxLineHeight = Math.max(maxLineHeight, fontRenderer.getWidth(I18n.translate(mainHandItem.getTranslationKey())));
+        maxLineHeight = Math.max(maxLineHeight, textRenderer.getWidth(I18n.translate(mainHandItem.getTranslationKey())));
         equippedItems.add(mainHandItem);
 
         for (ItemStack secondHandItem : inventory.offHand) {
-            maxLineHeight = Math.max(maxLineHeight, fontRenderer.getWidth(I18n.translate(secondHandItem.getTranslationKey())));
+            maxLineHeight = Math.max(maxLineHeight, textRenderer.getWidth(I18n.translate(secondHandItem.getTranslationKey())));
             equippedItems.add(secondHandItem);
         }
 
         for (ItemStack armourItem : player.inventory.armor) {
-            maxLineHeight = Math.max(maxLineHeight, fontRenderer.getWidth(I18n.translate(armourItem.getTranslationKey())));
+            maxLineHeight = Math.max(maxLineHeight, textRenderer.getWidth(I18n.translate(armourItem.getTranslationKey())));
             equippedItems.add(armourItem);
         }
 
         maxLineHeight = (int) (Math.ceil(maxLineHeight / 5.0D + 0.5D) * 5);
         int itemTop = client.getWindow().getScaledHeight() - maxLineHeight;
 
-        int lineHeight = fontRenderer.fontHeight + 6;
+        int lineHeight = textRenderer.fontHeight + 6;
 
         // Draw in order Helmet -> Chestplate -> Leggings -> Boots
         for (ItemStack equippedItem : Lists.reverse(equippedItems)) {
@@ -180,13 +180,13 @@ public class GameInfoHud {
                     color = Colors.lightRed;
                 }
 
-                fontRenderer.draw(matrices, itemDurability, 22, itemTop - 64, color);
+                textRenderer.draw(matrices, itemDurability, 22, itemTop - 64, color);
             } else {
                 int count = equippedItem.getCount();
 
                 if (count > 1) {
                     String itemCount = String.valueOf(count);
-                    fontRenderer.draw(matrices, itemCount, 22, itemTop - 64, Colors.lightGray);
+                    textRenderer.draw(matrices, itemCount, 22, itemTop - 64, Colors.lightGray);
                 }
             }
 
