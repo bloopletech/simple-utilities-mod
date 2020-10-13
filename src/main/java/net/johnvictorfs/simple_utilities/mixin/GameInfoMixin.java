@@ -29,8 +29,8 @@ public abstract class GameInfoMixin {
         this.hudInfo = new GameInfoHud(client);
     }
 
-    @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/options/GameOptions;hudHidden:Z", ordinal = 2))
-    private void onDraw(MatrixStack matrices, float esp, CallbackInfo ci) {
+    @Inject(method = "renderStatusEffectOverlay", at = @At(value = "HEAD"))
+    private void onDraw(MatrixStack matrices, CallbackInfo ci) {
         if (!this.client.options.debugEnabled) {
             // Draw Game info on every GameHud render
             this.hudInfo.draw(matrices);
