@@ -36,6 +36,8 @@ public class GameInfoHud {
     public void draw(MatrixStack matrices) {
         if(client.options.debugEnabled) return;
 
+        client.getProfiler().push("gameInfoHud");
+
         player = client.player;
         this.matrices = matrices;
 
