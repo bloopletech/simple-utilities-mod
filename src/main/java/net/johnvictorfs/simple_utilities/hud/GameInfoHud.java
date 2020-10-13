@@ -57,7 +57,7 @@ public class GameInfoHud {
         int left = 4;
 
         for (String line : gameInfo) {
-            textRenderer.draw(matrices, line, left, top + 4, Colors.lightGray);
+            textRenderer.draw(matrices, line, left, top + 4, Colors.white);
             top += lineHeight;
         }
 
@@ -70,7 +70,7 @@ public class GameInfoHud {
             int sprintingTop = scaleHeight - maxLineHeight;
 
             // Sprinting Info
-            textRenderer.draw(matrices, sprintingText, 2, sprintingTop + 20, Colors.lightGray);
+            textRenderer.draw(matrices, sprintingText, 2, sprintingTop + 20, Colors.white);
         }
     }
 
@@ -166,7 +166,7 @@ public class GameInfoHud {
                 String itemDurability = currentDurability + "/" + equippedItem.getMaxDamage();
 
                 // Default Durability Color
-                int color = Colors.lightGray;
+                int color = Colors.white;
 
                 if (currentDurability < equippedItem.getMaxDamage()) {
                     // Start as Green if item has lost at least 1 durability
@@ -188,7 +188,7 @@ public class GameInfoHud {
 
                 if (count > 1) {
                     String itemCount = String.valueOf(count);
-                    textRenderer.draw(matrices, itemCount, 22, itemTop - 64, Colors.lightGray);
+                    textRenderer.draw(matrices, itemCount, 22, itemTop - 64, Colors.white);
                 }
             }
 
