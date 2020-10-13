@@ -34,6 +34,8 @@ public class GameInfoHud {
     }
 
     public void draw(MatrixStack matrices) {
+        if(this.client.options.debugEnabled) return;
+
         this.player = this.client.player;
         this.matrices = matrices;
 
