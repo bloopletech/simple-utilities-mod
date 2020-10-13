@@ -30,18 +30,18 @@ public class GameInfoHud {
 
     public GameInfoHud(MinecraftClient client) {
         this.client = client;
-        this.fontRenderer = client.textRenderer;
+        fontRenderer = client.textRenderer;
     }
 
     public void draw(MatrixStack matrices) {
-        if(this.client.options.debugEnabled) return;
+        if(client.options.debugEnabled) return;
 
-        this.player = this.client.player;
+        player = client.player;
         this.matrices = matrices;
 
-        this.drawInfos();
+        drawInfos();
 
-        this.client.getProfiler().pop();
+        client.getProfiler().pop();
     }
 
     private void drawInfos() {
@@ -50,25 +50,25 @@ public class GameInfoHud {
         List<String> gameInfo = getGameInfo();
         drawEquipementInfo();
 
-        int lineHeight = this.fontRenderer.fontHeight + 2;
+        int lineHeight = fontRenderer.fontHeight + 2;
         int top = 0;
         int left = 4;
 
         for (String line : gameInfo) {
-            this.fontRenderer.draw(matrices, line, left, top + 4, Colors.lightGray);
+            fontRenderer.draw(matrices, line, left, top + 4, Colors.lightGray);
             top += lineHeight;
         }
 
-        if (this.player.isSprinting()) {
+        if (player.isSprinting()) {
             final String sprintingText = "Sprinting";
 
-            int maxLineHeight = Math.max(10, this.fontRenderer.getWidth(sprintingText));
+            int maxLineHeight = Math.max(10, fontRenderer.getWidth(sprintingText));
             maxLineHeight = (int) (Math.ceil(maxLineHeight / 5.0D + 0.5D) * 5);
-            int scaleHeight = this.client.getWindow().getScaledHeight();
+            int scaleHeight = client.getWindow().getScaledHeight();
             int sprintingTop = scaleHeight - maxLineHeight;
 
             // Sprinting Info
-            this.fontRenderer.draw(matrices, sprintingText, 2, sprintingTop + 20, Colors.lightGray);
+            fontRenderer.draw(matrices, sprintingText, 2, sprintingTop + 20, Colors.lightGray);
         }
     }
 
@@ -110,8 +110,8 @@ public class GameInfoHud {
     }
 
     private void drawStatusEffectInfo() {
-        if (this.client.player != null) {
-            Map<StatusEffect, StatusEffectInstance> effects = this.client.player.getActiveStatusEffects();
+        if (client.player != null) {
+            Map<StatusEffect, StatusEffectInstance> effects = client.player.getActiveStatusEffects();
 
             for (Map.Entry<StatusEffect, StatusEffectInstance> effect : effects.entrySet()) {
                 String effectName = I18n.translate(effect.getKey().getTranslationKey());
@@ -120,34 +120,34 @@ public class GameInfoHud {
 
                 int color = effect.getKey().getColor();
 
-                this.fontRenderer.draw(matrices, effectName + " " + duration, 40, 200, color);
+                fontRenderer.draw(matrices, effectName + " " + duration, 40, 200, color);
             }
         }
     }
 
     private void drawEquipementInfo() {
         List<ItemStack> equippedItems = new ArrayList<>();
-        PlayerInventory inventory = this.player.inventory;
-        int maxLineHeight = Math.max(10, this.fontRenderer.getWidth(""));
+        PlayerInventory inventory = player.inventory;
+        int maxLineHeight = Math.max(10, fontRenderer.getWidth(""));
 
         ItemStack mainHandItem = inventory.getMainHandStack();
-        maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getWidth(I18n.translate(mainHandItem.getTranslationKey())));
+        maxLineHeight = Math.max(maxLineHeight, fontRenderer.getWidth(I18n.translate(mainHandItem.getTranslationKey())));
         equippedItems.add(mainHandItem);
 
         for (ItemStack secondHandItem : inventory.offHand) {
-            maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getWidth(I18n.translate(secondHandItem.getTranslationKey())));
+            maxLineHeight = Math.max(maxLineHeight, fontRenderer.getWidth(I18n.translate(secondHandItem.getTranslationKey())));
             equippedItems.add(secondHandItem);
         }
 
-        for (ItemStack armourItem : this.player.inventory.armor) {
-            maxLineHeight = Math.max(maxLineHeight, this.fontRenderer.getWidth(I18n.translate(armourItem.getTranslationKey())));
+        for (ItemStack armourItem : player.inventory.armor) {
+            maxLineHeight = Math.max(maxLineHeight, fontRenderer.getWidth(I18n.translate(armourItem.getTranslationKey())));
             equippedItems.add(armourItem);
         }
 
         maxLineHeight = (int) (Math.ceil(maxLineHeight / 5.0D + 0.5D) * 5);
-        int itemTop = this.client.getWindow().getScaledHeight() - maxLineHeight;
+        int itemTop = client.getWindow().getScaledHeight() - maxLineHeight;
 
-        int lineHeight = this.fontRenderer.fontHeight + 6;
+        int lineHeight = fontRenderer.fontHeight + 6;
 
         // Draw in order Helmet -> Chestplate -> Leggings -> Boots
         for (ItemStack equippedItem : Lists.reverse(equippedItems)) {
@@ -156,7 +156,7 @@ public class GameInfoHud {
                 continue;
             }
 
-            this.client.getItemRenderer().renderGuiItemIcon(equippedItem, 2, itemTop - 68);
+            client.getItemRenderer().renderGuiItemIcon(equippedItem, 2, itemTop - 68);
 
             if (equippedItem.getMaxDamage() != 0) {
                 int currentDurability = equippedItem.getMaxDamage() - equippedItem.getDamage();
@@ -180,13 +180,13 @@ public class GameInfoHud {
                     color = Colors.lightRed;
                 }
 
-                this.fontRenderer.draw(matrices, itemDurability, 22, itemTop - 64, color);
+                fontRenderer.draw(matrices, itemDurability, 22, itemTop - 64, color);
             } else {
                 int count = equippedItem.getCount();
 
                 if (count > 1) {
                     String itemCount = String.valueOf(count);
-                    this.fontRenderer.draw(matrices, itemCount, 22, itemTop - 64, Colors.lightGray);
+                    fontRenderer.draw(matrices, itemCount, 22, itemTop - 64, Colors.lightGray);
                 }
             }
 
@@ -220,14 +220,14 @@ public class GameInfoHud {
     private List<String> getGameInfo() {
         List<String> gameInfo = new ArrayList<>();
 
-        Direction facing = this.player.getHorizontalFacing();
+        Direction facing = player.getHorizontalFacing();
 
         String coordsFormat = "%.0f, %.0f, %.0f %s";
 
         String direction = "(" + capitalize(facing.asString()) + " " + getOffset(facing) + ")";
 
         // Coordinates and Direction info
-        gameInfo.add(String.format(coordsFormat, this.player.getX(), this.player.getY(), this.player.getZ(), direction));
+        gameInfo.add(String.format(coordsFormat, player.getX(), player.getY(), player.getZ(), direction));
 
         // Get everything from fps debug string until the 's' from 'fps'
         // gameInfo.add(client.fpsDebugString.substring(0, client.fpsDebugString.indexOf("s") + 1));
@@ -235,7 +235,7 @@ public class GameInfoHud {
 
         // Get biome info
         if (client.world != null) {
-            gameInfo.add(capitalize(client.world.getBiome(this.player.getBlockPos()).getCategory().getName()) + " Biome");
+            gameInfo.add(capitalize(client.world.getBiome(player.getBlockPos()).getCategory().getName()) + " Biome");
 
             // Add current parsed time
             gameInfo.add(parseTime(client.world.getTimeOfDay()));
